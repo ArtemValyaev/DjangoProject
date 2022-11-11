@@ -1,0 +1,22 @@
+{%  extends 'main/layout.html' %}
+
+{% block title %}Авторизация{% endblock %}
+
+{% block content %}
+    <div class="features">
+        <h2>Авторизация</h2>
+        <form method="post" class="register_form">
+            {% csrf_token %}
+
+            <div class="form-errors">{{ form.non_field_errors }}</div>
+
+
+            <div class="a"><label class="form-label">Логин</label><p>{{form.username}}</p></div>
+            <div class="a"><label class="form-label">Пароль</label><p>{{form.password}}</p></div>
+            <div class="register_panel">
+                <a href="{% url 'register' %}"> <p class="reg">Зарегистрироваться</p></a>
+                <button type="submit" class="btn btn-info">Войти</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}

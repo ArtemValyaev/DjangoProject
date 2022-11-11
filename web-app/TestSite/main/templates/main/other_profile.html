@@ -1,0 +1,78 @@
+{%  extends 'main/layout.html' %}
+
+{% block title %}Мой профиль{% endblock %}
+
+{% load static %}
+{% block content %}
+<div class="features">
+
+        <div class="profile_body">
+            <div id="my_profile">
+                <div class="profile_info">
+                    {% for i in prof %}
+                    <div class="profile_img">
+                        <img class="profile_photo " src="media/{{i.profile_img}}" alt="Фото профиля">
+                    </div>
+                    {% endfor %}
+
+                    <div class="profile_content">
+                        <h1 class="username">{{ request.user.username }}</h1>
+                        <p>{{ request.user.email }}</p>
+                        <p>Зарегестрирован {{ request.user.date_joined }}</p>
+                        {% if my_news %}
+                        <p>Написал статей {{ my_news|length }}</p>
+                        {% endif %}
+                        {% if liked_news %}
+                        <p><a class="toLiked" href="{% url 'news_liked' %}">Понравилость статей {{ liked_news|length }}</p></a>
+                        {% endif %}
+                        {% if count_like %}
+                        <p>Общее число лайков {{ count_like }}</p>
+                        {% endif %}
+                        {% if bio %}
+                        <p>Общее число лайков {{ bio }}</p>
+                        {% endif %}
+                        <a href="{% url 'redact_profile' %}" id="redact">Редактировать</a>
+                    </div>
+                </div>
+                {{ bio }}
+                {% if my_news %}
+                <h3><a id="arrow" href="#down">↓ Вниз ↓</a></h3>
+                {% endif %}
+            </div>
+            {% if my_news %}
+                <div class="profile_states" id="down">
+                {% for el in my_news %}
+                <a href="{% url 'news-detail' el.id %}">
+                    <div class="news_block alert alert-warning news_card">
+
+                        <div class="news_block_img">
+                            {% if el.img %}
+                            <div class="news_photo"><img src="{{ el.img.url }}" class="img-fluid" alt="Фото статьи"></div>
+                            {% endif %}
+
+                            {% if user in el.liked.all %}
+                            <div class="like-red"><strong><i class="fa-regular fa-thumbs-up"></i> {{ el.liked.all.count }}</strong></div>
+                            {% else %}
+                            <div class=""><strong><i class="fa-regular fa-thumbs-up"></i> {{ el.liked.all.count }}</strong></div>
+                            {% endif %}
+                        </div>
+                        <div class="news_block_text">
+                            <div class="title news_title">{{ el.title }}</div>
+
+                            <div class="news_anons">{{ el.anons }}</div>
+                            <div class="news_fullText">{{ el.full_text }}</div>
+                            <div class="bottom_info">
+
+                                <em>Вы создали статью {{ el.date }}</em>
+                            </div>
+                        </div>
+                   </div>
+                </a>
+                {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+</div>
+{% endblock %}
+
+

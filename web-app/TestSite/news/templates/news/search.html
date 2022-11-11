@@ -1,0 +1,119 @@
+{%  extends 'main/layout.html' %}
+
+{% block title %}Новости на сайте{% endblock %}
+
+{% block content %}
+    <div class="features">
+        <h2>Результаты поиска</h2>
+        {% if news %}
+
+            {% for el in news %}
+            {% if el.img %}
+            {% if forloop.counter|divisibleby:"2" %}
+            <div class="prototype-news_block">
+                <hr>
+                <div class="prototype-news_block-header"><div class="author">{{ el.creater_username }}</div><span>{{ el.date }}</span></div>
+                <div class="prototype-news_block-content">
+                    <div class="prototype-news_block-content-text">
+                        <div class="text">
+                            <div class="prototype-news_block-content-header"><h3><a href="{% url 'news-detail' el.id %}">{{ el.title }}</a></h3></div>
+                            <hr>
+                            <div class="prototype-news_block-content-main"><p>{{ el.full_text|safe }}</p></div>
+
+                            <div class="read_more"><a href="{% url 'news-detail' el.id %}" class="read_more-a">Читать дальше</a></div>
+
+                        </div>
+                        <div class="prototype-news_block-bottomInfo">
+                            <hr>
+                            <div class="stats">
+                                <div>
+                                    {% if user in el.liked.all %}
+                                    <div class="like "><a href="{% url 'news-detail' el.id %}" class="liked"><strong><i class="fa-solid fa-heart"></i> {{ el.liked.all.count }}</a></strong></div>
+                                    {% else %}
+                                    <div class="like"><a href="{% url 'news-detail' el.id %}" ><strong><i class="fa-regular fa-heart"></i> {{ el.liked.all.count }}</a></strong></div>
+                                    {% endif %}
+                                </div>
+                                <div class="comments"><a href="{% url 'news-detail' el.id %}"><strong><i class="fa-solid fa-comment"></i> {{el.comments_articles.all.count }}</a></strong></div>
+                                <div class="reposts"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="prototype-news_block-content-media">
+                        <img src="{{ el.img.url }}" alt="">
+
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="prototype-news_block">
+                <hr>
+                <div class="prototype-news_block-header"><div class="author">{{ el.creater_username }}</div><span>{{ el.date }}</span></div>
+                <div class="prototype-news_block-content">
+                    <div class="prototype-news_block-content-media">
+                        <img src="{{ el.img.url }}" alt="">
+                    </div>
+                    <div class="prototype-news_block-content-text">
+                        <div class="text">
+                            <div class="prototype-news_block-content-header"><h3><a href="{% url 'news-detail' el.id %}">{{ el.title }}</a></h3></div>
+                            <hr>
+                            <div class="prototype-news_block-content-main"><p>{{ el.full_text|safe }}</p></div>
+                            <div class="read_more"><a href="{% url 'news-detail' el.id %}" class="read_more-a">Читать дальше</a></div>
+                        </div>
+                        <div class="prototype-news_block-bottomInfo">
+                            <hr>
+                            <div class="stats">
+                                <div class="likes">
+                                    {% if user in el.liked.all %}
+                                    <div class="like"><a href="{% url 'news-detail' el.id %}" class="liked"><strong><i class="fa-solid fa-heart"></i> {{ el.liked.all.count }}</a></strong></div>
+                                    {% else %}
+                                    <div class="like"><a href="{% url 'news-detail' el.id %}"><strong><i class="fa-regular fa-heart"></i> {{ el.liked.all.count }}</a></strong></div>
+                                    {% endif %}
+                                </div>
+                                <div class="comments"><a href="{% url 'news-detail' el.id %}"><strong><i class="fa-solid fa-comment"></i> {{el.comments_articles.all.count }}</a></strong></div>
+                                <div class="reposts"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% else %}
+
+            <div class="prototype-news_block">
+                <hr>
+                <div class="prototype-news_block-header"><div class="author">{{ el.creater_username }}</div><span>{{ el.date }}</span></div>
+                <div class="prototype-news_block-content">
+                    <div class="prototype-news_block-content-all">
+                        <div class="text">
+                            <div class="prototype-news_block-content-header"><h3><a href="{% url 'news-detail' el.id %}">{{ el.title }}</a></h3></div>
+                            <hr>
+                            <div class="prototype-news_block-content-main"><p>{{ el.full_text|safe }}</p></div>
+                            <div class="read_more"><a href="{% url 'news-detail' el.id %}" class="read_more-a">Читать дальше</a></div>
+                        </div>
+
+                        <div class="prototype-news_block-bottomInfo">
+                            <hr>
+                            <div class="stats">
+                                <div class="likes">
+                                    {% if user in el.liked.all %}
+                                    <div class="like"><a href="{% url 'news-detail' el.id %}" class="liked"><strong><i class="fa-solid fa-heart"></i> {{ el.liked.all.count }}</a></strong></div>
+                                    {% else %}
+                                    <div class="like"><a href="{% url 'news-detail' el.id %}"><strong><i class="fa-regular fa-heart"></i> {{ el.liked.all.count }}</a></strong></div>
+                                    {% endif %}
+                                </div>
+                                <div class="comments"><a href="{% url 'news-detail' el.id %}"><strong><i class="fa-solid fa-comment"></i> {{el.comments_articles.all.count }}</a></strong></div>
+                                <div class="reposts"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% endif %}
+
+            {% endfor %}
+        {% else %}
+            <p>Новостей на данный момент нет :(</p>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,76 @@
+{%  extends 'main/layout.html' %}
+
+{% block title %}{{ article.title }}{% endblock %}
+
+{% block content %}
+    <div class="side-panel-comments">
+        <aside class="side-panel-comments-comments">
+            <div class="xmark"><i class="fa-solid fa-xmark"></i></div>
+            <h3>Комментарии    {{article.comments_articles.all.count }}</h3>
+            <div>
+                <p>Добавить комментрий:</p>
+                <form method="POST" class="news_form" action="">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button class="btn btn-info" type="submit" name="drop_comment">Добавить</button>
+                </form>
+                {% for i in article.comments_articles.all %}
+                {% for j in profile %}
+                {% if i.commentator_id == j.profile_id and i.status == 'show' %}
+
+                    <div class="comment">
+                        <div class="comment_profile">
+                            <div class="comment_profile_img"><img src="/media/{{ j.profile_img }}" alt="photo"></div>
+                            <div>
+                                <div class="author">{{i.commentator}}</div>
+                                <div class="comment-date">{{ i.date|date:"d M Y"}}</div>
+                            </div>
+
+                        </div>
+
+                        <div class="comment_text"><p>{{ i.comment }}</p></div>
+
+                    </div>
+                    <hr>
+                {% endif %}
+                {% endfor %}{% endfor %}
+            </div>
+        </aside>
+
+    </div>
+
+
+    <div class="features">
+        <h2>{{ article.title }}</h2>
+        <hr>
+        <form method="POST" class="form-like" action="{% url 'like-news' %}">
+
+            {% csrf_token %}
+            <input type="hidden" name="news_id" value="{{article.id}}">
+            {% if user not in article.liked.all %}
+                <button class="" type="submit"><div class="like"><strong><i class="fa-regular fa-heart"></i> {{ article.liked.all.count }}</strong></div></button>
+            {% else %}
+                <button class="" type="submit"><div class="like liked"><strong><i class="fa-solid fa-heart"></i> {{ article.liked.all.count }}</strong></div></button>
+            {% endif %}
+            <div class="comments"><strong><i class="fa-solid fa-comment"></i> {{article.comments_articles.all.count }}</strong></div>
+            <div class="my-news_redact">
+                {% if request.user.is_authenticated %}
+                    {% if request.user.id == article.creater_id %}
+                    <a href="{% url 'news-delete' article.id %}" class="btn btn-danger">Удалить</a>
+                    <a href="{% url 'news-update' article.id %}" class="btn btn-info">Редактировать</a>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </form>
+        <hr>
+        <div class="prototype-news_block-header"><div class="author">{{ article.creater_username }}</div><span>{{ article.date }}</span></div>
+        {% if article.img %}
+            <div class="news_details_img"><img src="{{ article.img.url }}" class="img-fluid" alt="Фото статьи"></div>
+        {% endif %}
+        {{ article.full_text|safe }}
+
+        </div>
+    </div>
+
+
+{% endblock %}

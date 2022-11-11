@@ -1,0 +1,14 @@
+{%  extends 'main/layout.html' %}
+
+{% block title %}{{ article.title }}{% endblock %}
+
+{% block content %}
+    <div class="features">
+         <form method="POST" class="news_form" action="">
+             {% csrf_token %}
+             <textarea class="form-control" name="" id="" cols="30" rows="10"></textarea>
+             <button class="btn btn-outline-success" type="submit">Добавить комментарий</button>
+         </form>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,26 @@
+{%  extends 'main/layout.html' %}
+
+{% block title %}Регистрация{% endblock %}
+
+{% block content %}
+    <div class="features">
+
+        <h2>Регистрация</h2>
+        <form method="post" class="news_form">
+            {% csrf_token %}
+            <div class="a"><label class="form-label">Логин</label><p>{{form.username}}</p></div>
+            <div class="a"><label class="form-label">Электронная почта</label><p>{{form.email}}</p></div>
+            <div class="a"><label class="form-label">Пароль</label><p>{{form.password1}}</p></div>
+            <div class="a"><label class="form-label">Повтор пароля</label><p>{{form.password2}}</p></div>
+            <div class="form-error">{{ form.errors }}</div>
+
+
+
+            <div class="register_panel">
+                <a href="{% url 'login' %}"> <p class="reg">Уже есть аккаунт?</p></a>
+                <button type="submit" class="btn btn-info">Далее</button>
+            </div>
+
+        </form>
+    </div>
+{% endblock %}
